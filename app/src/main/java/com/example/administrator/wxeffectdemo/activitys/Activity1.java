@@ -1,0 +1,145 @@
+package com.example.administrator.wxeffectdemo.activitys;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
+
+import com.example.administrator.wxeffectdemo.R;
+import com.example.administrator.wxeffectdemo.fragments.DemoFragment;
+import com.example.administrator.wxeffectdemo.fragments.HomeFragment;
+import com.example.mylibrary.resideMenu.ResideMenu;
+import com.example.mylibrary.resideMenu.ResideMenuItem;
+
+public class Activity1 extends AppCompatActivity implements View.OnClickListener{
+
+    private ResideMenu resideMenu;
+    private Activity1 mContext;
+    private ResideMenuItem itemHome;
+    private ResideMenuItem itemProfile;
+    private ResideMenuItem itemCalendar;
+    private ResideMenuItem itemSettings;
+
+    private Toast mToast;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_1);
+        mContext = this;
+        setUpMenu();
+        if( savedInstanceState == null ){
+            changeFragment(HomeFragment.newInstance());
+        }
+    }
+
+    private void setUpMenu() {
+        // attach to current activity;
+        resideMenu = new ResideMenu(this);
+        resideMenu.setUse3D(true);
+        resideMenu.setBackground(R.drawable.menu_background);
+        resideMenu.attachToActivity(this);
+        resideMenu.setMenuListener(menuListener);
+        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
+        resideMenu.setScaleValue(0.6f);
+
+        // create menu items;
+        itemHome     = new ResideMenuItem(this, R.mipmap.ic_launcher,     "主页");
+        itemProfile  = new ResideMenuItem(this, R.mipmap.ic_launcher,  "我的");
+        itemCalendar = new ResideMenuItem(this, R.mipmap.ic_launcher, "日历");
+        itemSettings = new ResideMenuItem(this, R.mipmap.ic_launcher, "设置");
+
+        itemHome.setOnClickListener(this);
+        itemProfile.setOnClickListener(this);
+        itemCalendar.setOnClickListener(this);
+        itemSettings.setOnClickListener(this);
+
+        resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
+
+        // You can disable a direction by setting ->
+        // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
+
+        findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+            }
+        });
+        findViewById(R.id.title_bar_right_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return resideMenu.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == itemHome){
+            changeFragment(HomeFragment.newInstance());
+        }else if (view == itemProfile){
+            changeFragment(DemoFragment.newInstance(1));
+        }else if (view == itemCalendar){
+            changeFragment(HomeFragment.newInstance());
+        }else if (view == itemSettings){
+            changeFragment(DemoFragment.newInstance(1));
+        }
+        resideMenu.closeMenu();
+    }
+
+    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
+        @Override
+        public void openMenu() {
+            ShowToast("打开!");
+        }
+
+        @Override
+        public void closeMenu() {
+            ShowToast("关闭!");
+        }
+    };
+
+    private void changeFragment(Fragment targetFragment){
+        resideMenu.clearIgnoredViewList();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    // What good method is to access resideMenu？
+    public ResideMenu getResideMenu(){
+        return resideMenu;
+    }
+
+    public void ShowToast(final String text) {
+        if (!TextUtils.isEmpty(text)) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mToast == null) {
+                        mToast = Toast.makeText(getApplicationContext(), text,
+                                Toast.LENGTH_LONG);
+                    } else {
+                        mToast.setText(text);
+                    }
+                    mToast.show();
+                }
+            });
+
+        }
+    }
+}

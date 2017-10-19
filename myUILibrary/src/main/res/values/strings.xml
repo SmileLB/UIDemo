@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">My Library</string>
+
+    <string name="bye_burger_float_behavior">com.example.mylibrary.byeBurger.ByeBurgerFloatButtonBehavior</string>
+    <string name="bye_burger_bottom_behavior">com.example.mylibrary.byeBurger.ByeBurgerBottomBehavior</string>
+    <string name="bye_burger_title_behavior">com.example.mylibrary.byeBurger.ByeBurgerTitleBehavior</string>
+
+
+    <string name="tab_1">Label 1</string>
+    <string name="tab_2">Label 2</string>
+    <string name="tab_3">Label 3</string>
+    <string name="tab_4">Label 4</string>
+    <string name="tab_5">Label 5</string>
+
+    <string name="menu_1">Menu 1</string>
+    <string name="menu_2">Menu 2</string>
+    <string name="menu_3">Menu 3</string>
+    <string name="menu_4">Menu 4</string>
+    <string name="menu_5">Menu 5</string>
+
+</resources>
