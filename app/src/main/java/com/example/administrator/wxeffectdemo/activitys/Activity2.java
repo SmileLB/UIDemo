@@ -65,4 +65,19 @@ public class Activity2 extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * 点击了“动态”按钮
+     */
+    private void clickAtBtn() {
+        /*// 实例化Fragment页面
+        fragmentAt = new FragmentAt();
+        // 得到Fragment事务管理器
+        FragmentTransaction fragmentTransaction = this
+                .getSupportFragmentManager().beginTransaction();
+        // 替换当前的页面
+        fragmentTransaction.replace(R.id.frame_content, fragmentAt);
+        // 事务管理提交
+        fragmentTransaction.commit();*/
+    }
 }
